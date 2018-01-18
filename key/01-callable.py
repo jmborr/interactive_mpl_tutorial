@@ -1,3 +1,5 @@
+from __future__ import print_function, absolute_import
+
 from collections import deque
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -30,10 +32,10 @@ class FormatterCollector:
         self.event_deque = deque([], maxlen=maxlen)
 
     def __call__(self, event):
-        print(f'called {event.name} at ')
-        print(f' screen: ({event.x}, {event.y})')
+        print('called {} at '.format(event.name))
+        print(' screen: ({}, {})'.format(event.x, event.y))
         if event.inaxes:
-            print(f'   data: ({event.xdata:.3g}, {event.ydata:.3g})')
+            print('   data: ({:.3g}, {:.3g})'.format(event.xdata,event.ydata))
         self.event_deque.append(event)
 
     def collect_string(self):

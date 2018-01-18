@@ -1,3 +1,13 @@
+r"""Connecting a mouse event to a callback function
+"""
+
+from __future__ import print_function, absolute_import
+
+
+# This may be required if you are on a Mac and default to using OSX as
+# your backend
+# import matplotlib
+# matplotlib.use('qt5agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -13,27 +23,32 @@ def event_printer(event):
     global last_ev
     last_ev = event
     for k, v in sorted(vars(event).items()):
-        print(f'{k}: {v!r}')
+        print('{}: {!r}'.format(k, v))
     print('-'*25)
 
 
 th = np.linspace(0, 2*np.pi, 64)
 fig, ax = plt.subplots()
-# the `picker=5` kwarg turn on pick-events for this artist
+
+# the `picker=5` kwarg turns on pick-events for this artist
+# if clicked at a distance < 5 points from the artist
 ax.plot(th, np.sin(th), 'o-', picker=5)
 
-cid = fig.canvas.mpl_connect('button_press_event', event_printer)
+# - The callback registry is an attribute of FigureCanvasBase,
+#   thus we need to fetch the canvas to create the connection
+# - pick_event is one of the built-in event names
+#   https://matplotlib.org/users/event_handling.html
+# - cid : Connection ID, uniquely defines an event:callback pair
+cid = fig.canvas.mpl_connect('pick_event', event_printer)
+
 plt.show()
-# fig.canvas.mpl_disconnect(cid)
+fig.canvas.mpl_disconnect(cid)
 
 
-# EXERCISE (10 - 15 minutes)
-#
-# play around with events interactively
-#
-#   - Try all 'active' events
-#     ['button_press_event', 'button_release_event', 'scroll_event',
-#      'key_press_event', 'key_release_event', 'pick_event']
-#   - tweak the print line
-#   - remove a callback
-#   - add more than one callback to the canvas
+"""EXERCISE
+Add additional connections to the canvas by connecting all 'active' events
+to event_printer.
+Active events: ['button_press_event', 'button_release_event', 'scroll_event',
+                'key_press_event', 'key_release_event', 'pick_event']
+"""
+

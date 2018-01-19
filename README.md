@@ -40,4 +40,4 @@ All of the examples should be run from IPython as
 
    %run -i NN-FILE.py
 
-and should each be self-contained.
+and each should be self-contained.

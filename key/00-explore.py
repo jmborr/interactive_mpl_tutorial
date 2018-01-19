@@ -20,7 +20,7 @@ def event_printer(event):
     global last_ev
     last_ev = event
     print('{}'.format(event.name))
-    print(vars(event).keys())
+    print(vars(event))
     if event.name == 'button_release_event':
         print('=' * 25)
     else:
